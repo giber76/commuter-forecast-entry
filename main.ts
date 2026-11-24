@@ -33,6 +33,12 @@ const LINE =
 
 const dest = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 
+// The gate rejects anything over 140 characters, so refuse to write a
+// line that breaks it rather than submitting an invalid entry.
+if (LINE.length > 140) {
+  throw new Error(`entry is ${LINE.length} characters, over the 140 cap`);
+}
+
 // In the grader /output is a mount point: create it when it is missing,
 // never remove it and never empty it wholesale.
 mkdirSync(dest, { recursive: true });
